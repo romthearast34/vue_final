@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product</title>
+    {% include "header_style.html" %}
+</head>
+<body>
+<div>
+    {% include "navbar.html" %}
+</div>
+<div class="container">
+    <div class="row">
+        {% for item in product_list %}
+            <div class="col-md-3 col-sm-12 mt-4 mb-4">
+                <div class="card" style="width: 20rem; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);">
+                    <div class="card-header" style="height: 300px; background-color: white">
+                        <img src="{{ item.image }}" style="max-height: 100%; max-width: 100%; object-fit: contain"
+                             class="card-img-top" alt="...">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><strong>{{ item.title.split()[:3]|join(' ') }}</strong></h5>
+                        <hr>
+                        <p class="card-text mt-3">{{ item.description [:90] }}</p>
+                        <h4>
+                            {% for _ in range(item.rating.rate|int) %}
+                                <span class="star"><i class="fas fa-star"></i></span> <!-- Full star -->
+                            {% endfor %}
+                            {% if item.rating.rate % 1 >= 0.5 %}
+                                <span class="star"><i class="fas fa-star-half-alt"></i></span> <!-- Half star -->
+                            {% endif %}
+                            {% for _ in range(5 - item.rating.rate|int - (1 if item.rating.rate % 1 >= 0.5 else 0)) %}
+                                <span class="star"><i class="far fa-star"></i></span> <!-- Empty star -->
+                            {% endfor %}
+                        </h4>
+                        <a class="btn btn-dark" href="#">Cart</a>
+                        <a class="btn btn-outline-dark" href="/product_detail?id={{ item.id }}"
+                           target="_blank">Details</a>
+                        {#                        <a class="btn btn-success" href="/checkout?id={{ item.id }}">Add to Cart</a>#}
+                        <h4 class="float-end card-text mt-2" style="color: green">${{ item.price }}</h4>
+                        <h5 class="float-end card-text mt-2" style="color: darkred; font-size: small">
+                            <strike>${{ (item.price + 20) | round | float }}</strike></h5>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+{% include "footer_script.html" %}
+</html>

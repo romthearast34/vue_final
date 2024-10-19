@@ -1,0 +1,65 @@
+<div class="home-section">
+    <!--navbar-->
+    <nav class="navbar navbar-expand-lg" id="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('home') }}" style="color: whitesmoke"><img
+                    src="/static/image/whitedot.png" width="80px">GRACIAS PROJECT</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+        <span><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"
+                   fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+          <path fill-rule="evenodd"
+                d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+        </svg>
+            </span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="link-bar">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="{% if active_page == 'home' %}active{% endif %}" aria-current="page"
+                           href="{{ url_for('home') }}">មឺនុយ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="{% if active_page == 'clothes' %}active{% endif %}" href="{{ url_for('clothes') }}">អាវ</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            ម៉ូតទាំងអស់
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">ម៉ូតថ្មីបង្អស់</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">អាវ</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">អាវរងារ</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="{% if active_page == 'about' %}active{% endif %}" href="{{ url_for('about') }}">អំពីយើង</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="{% if active_page == 'product' %}active{% endif %}" href="{{ url_for('product') }}">product</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="{% if active_page == 'productdb' %}active{% endif %}" href="{{ url_for('productdb') }}">PRODUCT</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="ស្វែងរក..." aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit" id="search-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" fill="currentColor"
+                             class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+</div>

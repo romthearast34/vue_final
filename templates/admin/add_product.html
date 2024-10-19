@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
+    <style>
+        body {
+            background-color: #f5f7fa;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-control {
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid #d1d3e2;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #4e73df;
+            box-shadow: 0 0 5px rgba(78, 115, 223, 0.5);
+        }
+
+        .btn-primary {
+            background-color: #4e73df;
+            border: none;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #2e59d9;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #e9ecef;
+        }
+
+        .table img {
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .btn-warning {
+            margin-right: 5px;
+        }
+
+        .btn-warning:hover {
+            background-color: #d39e00;
+        }
+
+        .btn-danger:hover {
+            background-color: #bd2130;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="content-header">
+            <h2 class="content-title">Products</h2>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <!-- Product Form -->
+                    <div class="col-md-4">
+                        <form @submit.prevent="submitForm">
+                            <div class="mb-3">
+                                <label for="product_name" class="form-label">Product Name</label>
+                                <input type="text" v-model="product.name" id="product_name" class="form-control" placeholder="Enter product name" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="product_code" class="form-label">Product Code</label>
+                                <input type="text" v-model="product.code" id="product_code" class="form-control" placeholder="Enter product code" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="product_image" class="form-label">Product Image</label>
+                                <input type="file" @change="onFileChange" id="product_image" class="form-control" accept="image/*" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="category_id" class="form-label">Category</label>
+                                <select v-model="product.category_id" id="category_id" class="form-control">
+                                    <option value="" disabled>Select a category</option>
+                                    <option v-for="category in categories" :key="category.id" :value="category.id">
+                                        [[ category.name ]]
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="product_cost" class="form-label">Cost</label>
+                                <input type="text" v-model="product.cost" id="product_cost" class="form-control" placeholder="Enter cost" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="product_price" class="form-label">Price</label>
+                                <input type="text" v-model="product.price" id="product_price" class="form-control" placeholder="Enter price" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="current_stock" class="form-label">Current Stock</label>
+                                <input type="text" v-model="product.current_stock" id="current_stock" class="form-control" placeholder="Enter stock quantity" />
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">
+                                [[ editMode ? 'Update Product' : 'Create Product' ]]
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Product Table -->
+                    <div class="col-md-8">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Code</th>
+                                        <th>Name</th>
+                                        <th>Category</th>
+                                        <th>Cost</th>
+                                        <th>Price</th>
+                                        <th>Stock</th>
+                                        <th>Image</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="product in products" :key="product.id">
+                                        <td>[[ product.id ]]</td>
+                                        <td>[[ product.code ]]</td>
+                                        <td>[[ product.name ]]</td>
+                                        <td>[[ product.category_name ]]</td>
+                                        <td>[[ product.cost ]]</td>
+                                        <td>[[ product.price ]]</td>
+                                        <td>[[ product.current_stock ]]</td>
+                                        <td><img :src="'/static/uploads/' + product.image" alt="Product Image" width="50" /></td>
+                                        <td class="text-center">
+                                            <button class="btn btn-sm btn-warning" @click="editProduct(product)">Edit</button>
+                                            <button class="btn btn-sm btn-danger" @click="confirmDelete(product.id)">Delete</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '.container',
+            delimiters: ['[[', ']]'],
+            data() {
+                return {
+                    products: [],
+                    categories: [],
+                    product: { id: null, code: '', name: '', category_id: '', cost: '', price: '', current_stock: '', image: null },
+                    editMode: false
+                };
+            },
+            mounted() {
+                this.fetchProducts();
+                this.fetchCategories();
+            },
+            methods: {
+                fetchProducts() {
+                    fetch('/get_products')
+                        .then(response => response.json())
+                        .then(data => { this.products = data; });
+                },
+                fetchCategories() {
+                    fetch('/get_categories')
+                        .then(response => response.json())
+                        .then(data => { this.categories = data; });
+                },
+                onFileChange(event) {
+                    const file = event.target.files[0];
+                    if (file) this.product.image = file;
+                },
+                submitForm() {
+                    const formData = new FormData();
+                    Object.entries(this.product).forEach(([key, value]) => formData.append(key, value));
+                    const url = this.editMode ? `/update_product/${this.product.id}` : '/add_product_admin';
+                    fetch(url, { method: this.editMode ? 'PUT' : 'POST', body: formData })
+                        .then(() => { this.resetForm(); this.fetchProducts(); });
+                },
+                editProduct(product) {
+                    this.product = { ...product };
+                    this.editMode = true;
+                },
+                confirmDelete(id) {
+                    if (confirm('Are you sure?')) {
+                        fetch(`/delete_product/${id}`, { method: 'DELETE' })
+                            .then(() => { this.fetchProducts(); });
+                    }
+                },
+                resetForm() {
+                    this.product = { id: null, code: '', name: '', category_id: '', cost: '', price: '', current_stock: '', image: null };
+                    this.editMode = false;
+                }
+            }
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

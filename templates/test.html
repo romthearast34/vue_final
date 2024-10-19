@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    {% include "header_style.html" %}
+</head>
+<body>
+<div class="container" style="margin-top: 40px">
+    <h3>1. Include</h3>
+    <h5>{% include "navbar.html" %}</h5>
+    <hr>
+
+    <h3>2. Filter</h3>
+    <h5>{{ name | upper }}</h5>
+    <h5>{{ name | lower }}</h5>
+    <h5>{{ name | length }}</h5>
+    <hr>
+
+    <h3>3. Variable</h3>
+    <h5>{% set Animal = "Cow" %}
+        {{ Animal }}</h5>
+    <hr>
+
+    <h3>4. Testing and Filter</h3>
+    <h5>
+        <ul>
+            <li>First Item of List: {{ [1, 2, 3]|first }}</li>
+            <li>Last Item of List: {{ [1, 2, 3]|last }}</li>
+            <li>Random Item from List: {{ [1, 2, 3, 4, 5]|random }}</li>
+        </ul>
+    </h5>
+    <hr>
+
+    <h3>5. Data Filter</h3>
+    <h5>
+        <ul>
+            {% set numbers = [15, 2, 9, 18, 34, 3, 76] %}
+            {% for number in numbers|select('greaterthan', 10) %}
+                <li>{{ number }}</li>
+            {% endfor %}
+        </ul>
+    </h5>
+    <hr>
+
+    <h3>6. If</h3>
+    <h5>
+        {% if avg >= 80 %}
+            You are Excellent
+        {% elif avg >=50 %}
+            You are pass
+        {% else %}
+            You are Fail. Failure!
+        {% endif %}
+    </h5>
+    <hr>
+
+    <h3>7. For</h3>
+    <h5>
+        <ul>
+            {% for number in numbers %}
+                {% if number % 2 == 0 %}
+                    <li>{{ number }} is even</li>
+                {% else %}
+                    <li>{{ number }} is odd</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </h5>
+    <hr>
+
+    <h3>8. Macros</h3>
+    <h5>
+        {% macro list_food(food) %}
+            <li>{{ food }}</li>
+        {% endmacro %}
+        <ul>
+            {% for food in foods %}
+                {{ list_food(food) }}
+            {% endfor %}
+        </ul>
+    </h5>
+    <hr>
+
+    <h3>9. Data Manipulation</h3>
+    <h5>
+        <ul>
+            {% for group in items|groupby('type') %}
+                <strong>{{ group.grouper }}</strong>
+                <ul>
+                    {% for item in group.list %}
+                        <li>{{ item.name }}</li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </ul>
+    </h5>
+    <hr>
+
+    <h3>10. Math</h3>
+    <h5>
+        <ul>
+            <li>
+                {{ 5 + 7 }} <br>
+                {{ 8 * 2 }} <br>
+                {{ 8 / 2 }} <br>
+                {{ 9 - 3 }} <br>
+            </li>
+        </ul>
+    </h5>
+    <hr>
+
+    <h3>11. Comparision</h3>
+    <h5>
+        <ul>
+            <li>
+                <h4>Equal to</h4>
+                {% set capital = "Phnom Penh" %}
+
+                {% if capital == "Phnom Penh" %}
+                    <p>The capital of Cambodia is Phnom Penh.</p>
+                {% else %}
+                    <p>The capital of Cambodia is not Phnom Penh.</p>
+                {% endif %}
+            </li>
+            <li>
+                <h4>Not equal to</h4>
+                {% set currency = "Riel" %}
+
+                {% if currency != "Dollar" %}
+                    <p>The currency of Cambodia is not the Dollar.</p>
+                {% else %}
+                    <p>The currency of Cambodia is the Dollar.</p>
+                {% endif %}
+            </li>
+            <li>
+                <h4>Greater than / less than</h4>
+                {% set population = 16 %} {# in millions #}
+
+                {% if population > 15 %}
+                    <p>The population of Cambodia is more than 15 million.</p>
+                {% else %}
+                    <p>The population of Cambodia is 15 million or less.</p>
+                {% endif %}
+            </li>
+            <li>
+                <h4>Greater Than or Equal To / Less Than or Equal To</h4>
+                {% set size = 181035 %} {# in square kilometers #}
+
+                {% if size >= 181035 %}
+                    <p>The area of Cambodia is 181,035 square kilometers or more.</p>
+                {% else %}
+                    <p>The area of Cambodia is less than 181,035 square kilometers.</p>
+                {% endif %}
+            </li>
+        </ul>
+    </h5>
+    <hr>
+
+    <h3>12. Numeric Format</h3>
+    <h5>
+        Rounded Number: {{ 3.14159|round(2) }}
+        Sum of Numbers: {{ [1, 2, 3]|sum }}
+    </h5>
+    <hr>
+
+    <h3>13. Dictionary</h3>
+    <h3>Models List</h3>
+    <h5>
+        <ul>
+            <li>
+                Name: {{ model.name }}
+                Color: {{ model.color }}
+            </li>
+        </ul>
+    </h5>
+    <hr>
+
+    <h3>14. Whitespace Control</h3>
+    <h5>
+        <ul>
+            <li>Cambo {{-"dia" }}<br></li>
+        </ul>
+    </h5>
+    <hr>
+
+    <h3>15. Ternary Conditional</h3>
+    <h5>
+        {% set time = "Good Morning!" if hour > 5 and hour < 12
+                else ("Good Afternoon!" if hour>= 12 and hour < 17
+                else "Good Evening!" ) %}
+        {{ time }}
+    </h5>
+    <hr>
+
+    <h3>16. Collection</h3>
+    <h5>
+        Join List: {{ ["a", "b", "c"]|join(", ") }}
+        {% for slice in my_list|slice(3) %}
+            <ul>
+                {% for item in slice %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </h5>
+    <hr>
+
+    <h3>17. Date Format</h3>
+    <h5>
+        {{ now.strftime('%A-%b-%Y') }}
+    </h5>
+    <hr>
+
+    <h3>18. URL</h3>
+    <h5>
+        <a href="{{ url_for('home') }}" class="button">Home</a>
+    </h5>
+    <hr>
+
+    <h3>19. Complex Data Structures</h3>
+    <h5>
+        <ul>
+            {% set data = [{'name': 'John', 'age': 28}, {'name': 'Jane', 'age': 32}] %}
+            {% for item in data %}
+                <li>{{ item.name }} is {{ item.age }} years old.</li>
+            {% endfor %}
+        </ul>
+    </h5>
+    <hr>
+
+    <h3>20. Concat String</h3>
+    <h5>
+        {{ "It is " ~ hour ~ " PM" }}
+    </h5>
+    <hr>
+
+</div>
+</body>
+{% include "footer_script.html" %}
+</html>
